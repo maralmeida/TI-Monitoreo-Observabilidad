@@ -1,4 +1,4 @@
-# 🔎🌐 Observabilidad de TI y monitoreo
+# 🔎🌐 Observabilidad, operaciones de TI y monitoreo
 
 Encontrarán proyectos que simulan operaciones de ambientes productivos:
 * formulario de ingreso de información de usuario y presentación
@@ -8,4 +8,4 @@ Encontrarán proyectos que simulan operaciones de ambientes productivos:
 
 ### Tecnologías usadas:
 * back end: nodeJS, pino, UUIDv4, APIs rest, JS
-* front end: HTML, CSS, JS
+* front end: HTML, CSS, PHP, JS
