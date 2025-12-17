@@ -26,7 +26,7 @@ async function generarIngreso() {
         if (resultado.status === "success") {
             alert("¡Éxito! Guardado en la base de datos.");
             
-            // Tu lógica original para mostrar en el div
+            // muestro en el div para usuario de navegador
             document.getElementById('muestranombre').textContent = datos.nombre;
             document.getElementById('muestraedad').textContent = datos.edad;
             document.getElementById('muestragenero').textContent = datos.genero;

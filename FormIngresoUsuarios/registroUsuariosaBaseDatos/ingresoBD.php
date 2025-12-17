@@ -43,7 +43,7 @@ $stmt = sqlsrv_query($conn, $sql, $params);
 
 if ($stmt) {
     echo json_encode(["status" => "success", "message" => "Guardado en SQL Server"]);
-// Cambia esto:
+
 } else {
     echo json_encode(["status" => "error", "message" => print_r(sqlsrv_errors(), true)]);
 }
