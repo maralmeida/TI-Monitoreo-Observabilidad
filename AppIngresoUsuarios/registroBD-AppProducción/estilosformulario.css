@@ -1,0 +1,140 @@
+/* =================================
+ * 1. Estilos Globales (Body y Títulos) 
+ * ================================= */
+body {
+    /* Define una fuente moderna y un color de fondo suave */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6; /* Gris muy claro, casi blanco */
+    color: #333; /* Color de texto oscuro para alta legibilidad */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra el contenido horizontalmente */
+    padding: 20px;
+    margin: 0;
+}
+
+h1 {
+    color: #007bff; /* Color azul primario para el título */
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 10px; /* estaba en 30 */
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+}
+
+/* =================================
+ * 2. Estilo del Contenedor Principal (Formulario)
+ * ================================= */
+#formulario {
+    background-color: #fff; /* Fondo blanco para el formulario */
+    padding: 30px;
+    border-radius: 12px; /* Esquinas redondeadas */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave para efecto flotante */
+    width: 100%;
+    max-width: 500px; /* Limita el ancho máximo para mejor lectura */
+}
+
+/* =================================
+ * 3. Estilos de Etiquetas y Campos de Entrada
+ * ================================= */
+label {
+    /* Estilo para todas las etiquetas (Nombre, Edad, Género, etc.) */
+    display: inline-block; /* Permite controlar el margen */
+    font-weight: bold;
+    margin-top: 2px;   /* distancia entre labels nombre y edad, estaba en 15  */
+    margin-bottom: 2px;
+    width: 120px; /* Ancho fijo para alinear mejor las entradas */
+}
+
+input[type="text"],
+input[type="number"] {
+    /* Estilo para los campos de texto y número */
+    width: calc(100% - 130px); /* Ocupa el espacio restante en la línea */
+    padding: 10px;
+    margin-bottom: 2px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box; /* Asegura que el padding no cambie el ancho total */
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    /* Estilo al enfocar (hacer clic) en el campo */
+    border-color: #007bff;
+    outline: none; /* Quita el contorno por defecto del navegador */
+}
+
+/* =================================
+ * 4. Estilos Específicos para Radio Buttons
+ * ================================= */
+.radiobtnGenero,
+.radiobtnProfesion {
+    /* Contenedor para Género, País y Profesión */
+    padding: 10px 0;
+    margin-bottom: 5px;
+    border-top: 1px dashed #eee; /* Línea de separación sutil */
+}
+
+/* Alineación de los radio buttons */
+.radiobtnGenero label[for="genero"],
+.radiobtnProfesion label[for="pais"],
+.radiobtnProfesion label[for="profesion"] {
+    width: 100px; /* Ancho ajustado para estas etiquetas */
+    margin-right: 10px;
+}
+
+/* Estilo para los textos junto a los radio buttons */
+.radiobtnGenero input[type="radio"],
+.radiobtnProfesion input[type="radio"] {
+    margin-left: 15px;
+    margin-right: 5px;
+}
+
+
+/* =================================
+ * 5. Estilo del Botón de Enviar 
+ * ================================= */
+#boton {
+    /* Estilo para el botón Enviar */
+    display: block; /* Ocupa todo el ancho */
+    width: 100%;
+    padding: 12px 20px;
+    margin-top: 5px; /* estaba en 20 */
+    background-color: #28a745; /* Color verde para acción positiva */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#boton:hover {
+    background-color: #218838; /* Color un poco más oscuro al pasar el ratón */
+}
+
+/* =================================
+ * 6. Estilo del Contenedor de Resultado (flowcontrol) 
+ * ================================= */
+#flowcontrol {
+    background-color: #e9ecef; /* Fondo gris claro */
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%;
+    text-align: left;
+    border: 1px solid #dee2e6;
+}
+
+#flowcontrol p {
+    /* Separa un poco los elementos de resultado */
+    margin: 5px 0;
+}
+
+#flowcontrol span {
+    /* Resalta los valores mostrados */
+    font-weight: bold;
+    color: #dc3545; /* Un color de acento, rojo en este caso */
+}

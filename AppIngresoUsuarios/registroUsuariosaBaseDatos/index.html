@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Contacto</title>
+    <link rel="stylesheet" href="./estilosformulario.css">
+</head>
+
+<body>
+    <h1>Ingreso de Nuevos Usuarios</h1> 
+
+    <form id="formulario"> <!-- <form action="generaIngreso" method="post">  -->
+        <!-- Campo para el nombre -->
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" placeholder="inserta tu nombre" required>
+        <br><br>
+
+        <label for="edad">Edad:</label>
+        <input type="number" id="edad" min="0" max="20" placeholder="Ingrese una edad entre 0 y 20 años">
+        <br><br>
+
+        <div class="radiobtnGenero">
+            <label for="genero">Género:</label>
+            <input type="radio" name="genero" value="Masculino"> Masculino
+            <input type="radio" name="genero" value="Femenino"> Femenino
+            <br><br>
+        </div>
+
+        <div class="radiobtnProfesion">
+            <label for="pais">País:</label>
+            <input type="radio" name="pais" value="ecuador"> Ecuador
+            <input type="radio" name="pais" value="chile"> Chile
+            <input type="radio" name="pais" value="argentina"> Argentina
+            <br><br>
+        </div>
+
+        <div class="radiobtnProfesion">
+            <label for="profesion">Profesión:</label>
+            <input type="radio" name="profesion" value="estudiante"> Estudiante
+            <input type="radio" name="profesion" value="trabajador"> Trabajador
+            <input type="radio" name="profesion" value="desempleado"> Desempleado
+            <br><br>
+        </div>
+
+        <!-- Botón para enviar -->
+        <button type="button" id="boton">Enviar</button>
+    </form>
+
+    <div id="flowcontrol" style="display: none;">
+        <p>Nombre: <span id="muestranombre"></span></p>
+        <p>Edad: <span id="muestraedad"></span></p>
+        <p>Genero: <span id="muestragenero"></span></p>
+        <p>Pais: <span id="muestrapais"></span></p>
+        <p>Profesion: <span id="muestraprofesion"></span></p>
+    </div>
+
+    <script src="./registro.js"></script>
+</body>
+</html>
