@@ -2,7 +2,7 @@
 
 Tecnologías Usadas:
 * HTML, CSS, JS, PHP
-* conexión con SQL server vía XAMPP, usuario SQL
+* Hyper-V, windows servers, redes, MSSQL, IIS, usuario para BD, autenticación mixta, configuración TCP/IP y puertos, DNS, DHCP, Firewall
 
 ### Configuraciones necesarias:
   #### Servidor Web
