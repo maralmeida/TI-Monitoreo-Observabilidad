@@ -1,41 +1,42 @@
-## 📝Aplicación para el ingreso de Datos generales de usuarios y su registro en Base de datos
+## 📝Aplicación Web para el registro de Usuarios con almacenamiento persistente
 
-Desarrollé esta aplicación junto con una arquitectura de red TCP/IP e infraestructura virtualizada, que permite el ingreso de información y su almacenamiento. 
--> El servicio se encuentra alojado en IIS con conexión a SQL server, ambos servidores en diferentes subredes.
--> El direccionamiento lógico es realizado mediante DHCP. Este servicio y el de DNS son dados por otro equipo servidor donde levanté estos servicios.
+Desarrollé esta aplicación web junto con una arquitectura de red TCP/IP e infraestructura virtualizada, que permite el ingreso de información y su almacenamiento. 
+* El servicio se encuentra alojado en IIS con conexión a SQL server, ambos servidores se encuentran en diferentes subredes lógicas.
+* La arquitectura de red se encuentra segmentada mediante Hyper-V.
+* El direccionamiento lógico es realizado mediante DHCP. Este servicio y el de DNS son dados por otro equipo servidor donde levanté estos servicios.
 
-Tecnologías Usadas:
-* HTML, CSS, JS, PHP
-* Hyper-V, windows servers, redes, MSSQL, IIS, usuario para BD, autenticación mixta, configuración TCP/IP y puertos, DNS, DHCP, Firewall
+### ⚙️ Stack Tecnológico
+* HTML, CSS, JS, PHP con FastCGI, DB drivers sqlsrv y pdo_sqlsrv
+* Hyper-V, windows servers, MSSQL, IIS, usuario para BD, autenticación mixta, configuración TCP/IP y puertos, DNS, DHCP, Firewall
 
-### Configuraciones necesarias:
-  #### Servidor Web
-  * para contar con un servidor local descargar xampp, validar versión de php y arquitectura (consola xampp -> apache -> admin -> phpinfo)
-    esto permitirá enviar la info capturada vía javascript al servidor de base de datos MSSQL mediante el servidor web XAMPP
-  * descargar drivers de php según versión y arquitectura
-  
-    1- acceder al sitio oficial de microsoft para la descarga https://learn.microsoft.com/en-us/sql/connect/php/download-drivers-php-sql-server?view=sql-server-ver17 
-  
-    2- copiar la archivos según versión y arquitectura: Ejemplo para PHP 8.2 en 64 bits: php_sqlsrv_82_ts_x64.dll y php_pdo_sqlsrv_82_ts_x64.dll
-    guardarlas en la carpeta C:\xampp\php\ext de xampp 
-  
-    3- activar los drivers en xampp (consola xampp -> apache -> config -> en archivo php.ini al final copiar extension=php_sqlsrv_82_ts_x64.dll
-      extension=php_pdo_sqlsrv_82_ts_x64.dll ajustando nombres de ser necesario -> guardar archivo)
-  
-    4- reiniciar apache (consola xampp -> stop / start)
-  * guardar los archivos necesarios para funcionamiento de la aplicación en C:\xampp\htdocs\mi_carpeta\index.html siendo index el archivo principal
-  * ejecutar en el navegador http://localhost/mi_carpeta/index.html para acceder a mi aplicación
-  
-  #### Conexión con Servidor MSSQSL
-  1- Acceder a SQL server configuration manager desde el explorador de windows 
-  
-  2- ir a SQL server network configuration en el menú izquierdo-> protocols for MSSQLSERVER -> TCP/IP (habilitar si está deshabilitada) -> click derecho e ir a propiedades ahí mismo -> pestaña IP Adresses -> al final ir a IPAII y validar que el puerto sea 1433 / dejar vacío TCP dynamic ports -> ok
-  
-  3- reiniciar servicio yendo a SQL Server Services en la izquierda -> seleccionar MSSQL server o instancia -> restart
-  
-  4- para testear conexión en cmd hacer telnet localhost 1433. si ingresa, la conexión e estableció, si no la abre validar puerto o firewall.
-  
-  5- al ejecutar la aplicación y de salir error de conexión, validar campos de conexión y de ser correctos y permanecer el error, crear usuario de autenticación windows y SQL (mixta)
+### 🌐 Infraestructura de Red y Gestión de Usuarios
+
+📂 Arquitectura de Red (Layout)
+
+El despliegue se basa en una segmentación de red Clase C para aislar los servicios:
+
+* VLAN A (192.168.200.0/27):
+Main Server (.2): Gestiona los servicios de red DNS y DHCP.
+Servidor Web IIS (.3): Aloja la lógica de la aplicación.
+
+* VLAN B (192.168.200.32/27):
+SQL Server (.35): Almacena de forma persistente la información de los usuarios.
+Conectividad: La comunicación entre el servidor web y la base de datos se realiza mediante ruteo entre las puertas de enlace .1 y .33.
+
+### 🚀 Componentes del Proyecto
+
+#### 📂 Flujo de conexión desde el cliente hasta el servidor de base de datos.
+
+* Frontend: Formulario en HTML/JS para la captura de datos, estilos en CSS.
+* Backend: script PHP mediante FastCGI en IIS. IIS envía las peticiones a php-cgi.exe, un proceso independiente always on.
+* Conexión BD: Implementación de PDO con el driver sqlsrv para comunicación directa con el SQL Server en la IP 192.168.200.35.
+
+#### 📂 Otros Módulos
+
+Trazabilidad: Registro de eventos de conexión para debug de errores.
 
 
-* 
+### 🏗️ ¿Cómo configurarlo?
+  
+  * Asegurar que el IIS tenga habilitado el módulo FastCGI Settings para procesar los archivos .php
+  * Configurar la cadena de conexión hacia el servidor de base de datos en el archivo PHP, apuntando a instancia correcta (ip, puerto, usuario de conexión a BD).
