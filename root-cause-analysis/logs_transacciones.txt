@@ -1,0 +1,121 @@
+Timestamp|Severidad|Componente|Mensaje|ID_Transaccion
+2025-10-25 09:00:00|ALTA|DB_SQL|Fallo de conexion al servidor 10.0.0.5|T001
+2025-10-25 09:00:15|BAJA|API_Gateway|Solicitud GET /info exitosa|T002
+2025-10-25 09:00:30|MEDIA|Web_Server|Tiempo de respuesta lento (3s)|T003
+2025-10-25 09:01:00|ALTA|Auth_Service|Autenticacion fallida por token expirado|T004
+2025-10-25 09:01:15|BAJA|DB_SQL|Transaccion completada OK|T005
+2025-10-25 09:01:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T006
+2025-10-25 09:02:00|ALTA|DB_SQL|Bloqueo detectado en tabla 'Ventas'|T007
+2025-10-25 09:02:15|BAJA|Web_Server|Carga de página de inicio|T008
+2025-10-25 09:02:30|MEDIA|Auth_Service|Validacion de certificado proxima a vencer|T009
+2025-10-25 09:03:00|ALTA|Web_Server|Error 500 interno: Fallo critico|T010
+2025-10-25 09:03:15|BAJA|DB_SQL|Transaccion completada OK|T011
+2025-10-25 09:03:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T012
+2025-10-25 09:04:00|ALTA|DB_SQL|Fallo de conexion al servidor 10.0.0.5|T013
+2025-10-25 09:04:15|BAJA|API_Gateway|Solicitud GET /info exitosa|T014
+2025-10-25 09:04:30|MEDIA|Web_Server|Tiempo de respuesta lento (3s)|T015
+2025-10-25 09:05:00|ALTA|Auth_Service|Autenticacion fallida por token expirado|T016
+2025-10-25 09:05:15|BAJA|DB_SQL|Transaccion completada OK|T017
+2025-10-25 09:05:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T018
+2025-10-25 09:06:00|ALTA|DB_SQL|Bloqueo detectado en tabla 'Ventas'|T019
+2025-10-25 09:06:15|BAJA|Web_Server|Carga de página de inicio|T020
+2025-10-25 09:06:30|MEDIA|Auth_Service|Validacion de certificado proxima a vencer|T021
+2025-10-25 09:07:00|ALTA|Web_Server|Error 500 interno: Fallo critico|T022
+2025-10-25 09:07:15|BAJA|DB_SQL|Transaccion completada OK|T023
+2025-10-25 09:07:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T024
+2025-10-25 09:08:00|ALTA|DB_SQL|Fallo de conexion al servidor 10.0.0.5|T025
+2025-10-25 09:08:15|BAJA|API_Gateway|Solicitud GET /info exitosa|T026
+2025-10-25 09:08:30|MEDIA|Web_Server|Tiempo de respuesta lento (3s)|T027
+2025-10-25 09:09:00|ALTA|Auth_Service|Autenticacion fallida por token expirado|T028
+2025-10-25 09:09:15|BAJA|DB_SQL|Transaccion completada OK|T029
+2025-10-25 09:09:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T030
+2025-10-25 09:10:00|ALTA|DB_SQL|Bloqueo detectado en tabla 'Ventas'|T031
+2025-10-25 09:10:15|BAJA|Web_Server|Carga de página de inicio|T032
+2025-10-25 09:10:30|MEDIA|Auth_Service|Validacion de certificado proxima a vencer|T033
+2025-10-25 09:11:00|ALTA|Web_Server|Error 500 interno: Fallo critico|T034
+2025-10-25 09:11:15|BAJA|DB_SQL|Transaccion completada OK|T035
+2025-10-25 09:11:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T036
+2025-10-25 09:12:00|ALTA|DB_SQL|Fallo de conexion al servidor 10.0.0.5|T037
+2025-10-25 09:12:15|BAJA|API_Gateway|Solicitud GET /info exitosa|T038
+2025-10-25 09:12:30|MEDIA|Web_Server|Tiempo de respuesta lento (3s)|T039
+2025-10-25 09:13:00|ALTA|Auth_Service|Autenticacion fallida por token expirado|T040
+2025-10-25 09:13:15|BAJA|DB_SQL|Transaccion completada OK|T041
+2025-10-25 09:13:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T042
+2025-10-25 09:14:00|ALTA|DB_SQL|Bloqueo detectado en tabla 'Ventas'|T043
+2025-10-25 09:14:15|BAJA|Web_Server|Carga de página de inicio|T044
+2025-10-25 09:14:30|MEDIA|Auth_Service|Validacion de certificado proxima a vencer|T045
+2025-10-25 09:15:00|ALTA|Web_Server|Error 500 interno: Fallo critico|T046
+2025-10-25 09:15:15|BAJA|DB_SQL|Transaccion completada OK|T047
+2025-10-25 09:15:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T048
+2025-10-25 09:16:00|ALTA|DB_SQL|Fallo de conexion al servidor 10.0.0.5|T049
+2025-10-25 09:16:15|BAJA|API_Gateway|Solicitud GET /info exitosa|T050
+2025-10-25 09:16:30|MEDIA|Web_Server|Tiempo de respuesta lento (3s)|T051
+2025-10-25 09:17:00|ALTA|Auth_Service|Autenticacion fallida por token expirado|T052
+2025-10-25 09:17:15|BAJA|DB_SQL|Transaccion completada OK|T053
+2025-10-25 09:17:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T054
+2025-10-25 09:18:00|ALTA|DB_SQL|Bloqueo detectado en tabla 'Ventas'|T055
+2025-10-25 09:18:15|BAJA|Web_Server|Carga de página de inicio|T056
+2025-10-25 09:18:30|MEDIA|Auth_Service|Validacion de certificado proxima a vencer|T057
+2025-10-25 09:19:00|ALTA|Web_Server|Error 500 interno: Fallo critico|T058
+2025-10-25 09:19:15|BAJA|DB_SQL|Transaccion completada OK|T059
+2025-10-25 09:19:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T060
+2025-10-25 09:20:00|ALTA|DB_SQL|Fallo de conexion al servidor 10.0.0.5|T061
+2025-10-25 09:20:15|BAJA|API_Gateway|Solicitud GET /info exitosa|T062
+2025-10-25 09:20:30|MEDIA|Web_Server|Tiempo de respuesta lento (3s)|T063
+2025-10-25 09:21:00|ALTA|Auth_Service|Autenticacion fallida por token expirado|T064
+2025-10-25 09:21:15|BAJA|DB_SQL|Transaccion completada OK|T065
+2025-10-25 09:21:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T066
+2025-10-25 09:22:00|ALTA|DB_SQL|Bloqueo detectado en tabla 'Ventas'|T067
+2025-10-25 09:22:15|BAJA|Web_Server|Carga de página de inicio|T068
+2025-10-25 09:22:30|MEDIA|Auth_Service|Validacion de certificado proxima a vencer|T069
+2025-10-25 09:23:00|ALTA|Web_Server|Error 500 interno: Fallo critico|T070
+2025-10-25 09:23:15|BAJA|DB_SQL|Transaccion completada OK|T071
+2025-10-25 09:23:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T072
+2025-10-25 09:24:00|ALTA|DB_SQL|Fallo de conexion al servidor 10.0.0.5|T073
+2025-10-25 09:24:15|BAJA|API_Gateway|Solicitud GET /info exitosa|T074
+2025-10-25 09:24:30|MEDIA|Web_Server|Tiempo de respuesta lento (3s)|T075
+2025-10-25 09:25:00|ALTA|Auth_Service|Autenticacion fallida por token expirado|T076
+2025-10-25 09:25:15|BAJA|DB_SQL|Transaccion completada OK|T077
+2025-10-25 09:25:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T078
+2025-10-25 09:26:00|ALTA|DB_SQL|Bloqueo detectado en tabla 'Ventas'|T079
+2025-10-25 09:26:15|BAJA|Web_Server|Carga de página de inicio|T080
+2025-10-25 09:26:30|MEDIA|Auth_Service|Validacion de certificado proxima a vencer|T081
+2025-10-25 09:27:00|ALTA|Web_Server|Error 500 interno: Fallo critico|T082
+2025-10-25 09:27:15|BAJA|DB_SQL|Transaccion completada OK|T083
+2025-10-25 09:27:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T084
+2025-10-25 09:28:00|ALTA|DB_SQL|Fallo de conexion al servidor 10.0.0.5|T085
+2025-10-25 09:28:15|BAJA|API_Gateway|Solicitud GET /info exitosa|T086
+2025-10-25 09:28:30|MEDIA|Web_Server|Tiempo de respuesta lento (3s)|T087
+2025-10-25 09:29:00|ALTA|Auth_Service|Autenticacion fallida por token expirado|T088
+2025-10-25 09:29:15|BAJA|DB_SQL|Transaccion completada OK|T089
+2025-10-25 09:29:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T090
+2025-10-25 09:30:00|ALTA|DB_SQL|Bloqueo detectado en tabla 'Ventas'|T091
+2025-10-25 09:30:15|BAJA|Web_Server|Carga de página de inicio|T092
+2025-10-25 09:30:30|MEDIA|Auth_Service|Validacion de certificado proxima a vencer|T093
+2025-10-25 09:31:00|ALTA|Web_Server|Error 500 interno: Fallo critico|T094
+2025-10-25 09:31:15|BAJA|DB_SQL|Transaccion completada OK|T095
+2025-10-25 09:31:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T096
+2025-10-25 09:32:00|ALTA|DB_SQL|Fallo de conexion al servidor 10.0.0.5|T097
+2025-10-25 09:32:15|BAJA|API_Gateway|Solicitud GET /info exitosa|T098
+2025-10-25 09:32:30|MEDIA|Web_Server|Tiempo de respuesta lento (3s)|T099
+2025-10-25 09:33:00|ALTA|Auth_Service|Autenticacion fallida por token expirado|T100
+2025-10-25 09:33:15|BAJA|DB_SQL|Transaccion completada OK|T101
+2025-10-25 09:33:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T102
+2025-10-25 09:34:00|ALTA|DB_SQL|Bloqueo detectado en tabla 'Ventas'|T103
+2025-10-25 09:34:15|BAJA|Web_Server|Carga de página de inicio|T104
+2025-10-25 09:34:30|MEDIA|Auth_Service|Validacion de certificado proxima a vencer|T105
+2025-10-25 09:35:00|ALTA|Web_Server|Error 500 interno: Fallo critico|T106
+2025-10-25 09:35:15|BAJA|DB_SQL|Transaccion completada OK|T107
+2025-10-25 09:35:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T108
+2025-10-25 09:36:00|ALTA|DB_SQL|Fallo de conexion al servidor 10.0.0.5|T109
+2025-10-25 09:36:15|BAJA|API_Gateway|Solicitud GET /info exitosa|T110
+2025-10-25 09:36:30|MEDIA|Web_Server|Tiempo de respuesta lento (3s)|T111
+2025-10-25 09:37:00|ALTA|Auth_Service|Autenticacion fallida por token expirado|T112
+2025-10-25 09:37:15|BAJA|DB_SQL|Transaccion completada OK|T113
+2025-10-25 09:37:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T114
+2025-10-25 09:38:00|ALTA|DB_SQL|Bloqueo detectado en tabla 'Ventas'|T115
+2025-10-25 09:38:15|BAJA|Web_Server|Carga de página de inicio|T116
+2025-10-25 09:38:30|MEDIA|Auth_Service|Validacion de certificado proxima a vencer|T117
+2025-10-25 09:39:00|ALTA|Web_Server|Error 500 interno: Fallo critico|T118
+2025-10-25 09:39:15|BAJA|DB_SQL|Transaccion completada OK|T119
+2025-10-25 09:39:30|MEDIA|API_Gateway|Reintento de conexion exitoso|T120
