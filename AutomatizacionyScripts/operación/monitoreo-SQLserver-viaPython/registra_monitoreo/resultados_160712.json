@@ -1,0 +1,53 @@
+{
+    "archivo_origen": "genera_monitoreo.sql",
+    "fecha_ejecucion": "2026-01-10 16:07:12.484579",
+    "bloque_1": [
+        {
+            "ConexionesActivas": "5"
+        }
+    ],
+    "bloque_2": [
+        {
+            "session_id": "55",
+            "login_name": "MARIETTA\\USER",
+            "host_name": "MARIETTA",
+            "program_name": "Microsoft SQL Server Management Studio - Transact-SQL IntelliSense"
+        },
+        {
+            "session_id": "56",
+            "login_name": "usuario_php",
+            "host_name": "MARIETTA",
+            "program_name": "Python"
+        },
+        {
+            "session_id": "62",
+            "login_name": "MARIETTA\\USER",
+            "host_name": "MARIETTA",
+            "program_name": "Microsoft SQL Server Management Studio - Consulta"
+        },
+        {
+            "session_id": "64",
+            "login_name": "MARIETTA\\USER",
+            "host_name": "MARIETTA",
+            "program_name": "Microsoft SQL Server Management Studio"
+        },
+        {
+            "session_id": "68",
+            "login_name": "NT SERVICE\\SQLTELEMETRY",
+            "host_name": "MARIETTA",
+            "program_name": "SQLServerCEIP"
+        }
+    ],
+    "bloque_3": [
+        {
+            "name": "UsuariosApp",
+            "TamañoMB": "8",
+            "max_size": "-1"
+        },
+        {
+            "name": "UsuariosApp_log",
+            "TamañoMB": "8",
+            "max_size": "268435456"
+        }
+    ]
+}
