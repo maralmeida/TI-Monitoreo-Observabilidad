@@ -11,7 +11,7 @@ Desarrollé esta aplicación web junto con una arquitectura de red TCP/IP e infr
 
 ### 🌐 Infraestructura de Red y Gestión de Usuarios
 
-📂 Arquitectura de Red (Layout)
+📂 Arquitectura de Red (Layout) --> https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AppProduccion-RegistroUsuarios/3-ArquitecturaRed.png
 
 El despliegue se basa en una segmentación de red Clase C para aislar los servicios:
 
@@ -25,11 +25,11 @@ Conectividad: La comunicación entre el servidor web y la base de datos se reali
 
 ### 🚀 Componentes del Proyecto
 
-#### 📂 Flujo de conexión desde el cliente hasta el servidor de base de datos.
-
+#### 📂 Flujo de conexión desde el cliente hasta el servidor de base de datos. --> https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AppProduccion-RegistroUsuarios/1-ingreso.png
 * Frontend: Formulario en HTML/JS para la captura de datos, estilos en CSS.
 * Backend: script PHP mediante FastCGI en IIS. IIS envía las peticiones a php-cgi.exe, un proceso independiente always on.
 * Conexión BD: Implementación de PDO con el driver sqlsrv para comunicación directa con el SQL Server en la IP 192.168.200.35.
+resultado: https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AppProduccion-RegistroUsuarios/2-registroBD.png
 
 #### 📂 Otros Módulos
 
