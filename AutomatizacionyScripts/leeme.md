@@ -79,6 +79,7 @@ Ejemplos reales detectados:
 * Antivirus
 
 **Beneficio clave:** Permite actuar antes de un colapso del sistema operativo https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/operacion/monitor_RAM_resultado.png
+
 ---
 ##  ⚠️  Requisitos para que funcione
 
