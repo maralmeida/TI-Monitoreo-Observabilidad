@@ -47,10 +47,10 @@ Especialmente útil en entornos Bancarios, Financieros, Medios de pago, Aplicaci
 * Identificación de usuarios humanos vs servicios
 * Tamaño de archivo .mdf y .ldf para **Control de crecimiento de archivos**
 
-**Beneficio clave:** Visibilidad total de la actividad real de la base de datos.
+**Beneficio clave:** Visibilidad total de la actividad real de la base de datos https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/operacion/monitor_BD_resultado.png
 
 ### Monitoreo de disponibilidad de servidor y aplicación (PowerShell) 📈
-**Archivo de salida:** `Logs_disponibilidad.txt`. Este script valida:
+**Archivo de salida:** `[Logs_disponibilidad.txt]`. Este script valida:
 1. 🖥️ Estado del servidor físico ->  (online / offline).
 2. 🌐 Disponibilidad real de la aplicación -> validando si el puerto TCP está escuchando.
 
@@ -60,7 +60,7 @@ Estados detectados:
 * ❌ Puerto inaccesible (probablemente por Firewall, IIS detenido, pool caído)
 * ✅ Aplicación escuchando correctamente
 
-**Diferencial importante:** --> No asumir que un servidor encendido implica una aplicación disponible.
+**Diferencial importante:** --> No asumir que un servidor encendido implica una aplicación disponible https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/operacion/monitor_WS_resultado.png
 
 ### Monitoreo de memoria RAM y procesos (PowerShell / Python) 📈
 **Archivo de salida:** `log_memoria.txt`. Este módulo monitorea en tiempo real:
@@ -78,8 +78,7 @@ Ejemplos reales detectados:
 * Compresión de memoria
 * Antivirus
 
-**Beneficio clave:** Permite actuar antes de un colapso del sistema operativo.
-
+**Beneficio clave:** Permite actuar antes de un colapso del sistema operativo https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/operacion/monitor_RAM_resultado.png
 ---
 ##  ⚠️  Requisitos para que funcione
 
