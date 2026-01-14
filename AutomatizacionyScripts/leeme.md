@@ -1,6 +1,6 @@
  # 📊 Monitoreo Integral de Infraestructura y Base de Datos
 
-Construí un sistema de monitoreo técnico empresarial orientado a la disponibilidad, uso de recursos y actividad en base de datos, combinando PowerShell, MSSQL y Windows Server.
+Construí un sistema de monitoreo técnico empresarial orientado a la disponibilidad, uso de recursos de Servidor Web y actividad en base de datos, combinando PowerShell, MSSQL y Windows Server.
 
 El objetivo de este proyecto es anticipar incidentes, detectar comportamientos anómalos y proveer información clara y accionable para equipos de Operaciones, Infraestructura, Bases de Datos y Gestión TI.
 
