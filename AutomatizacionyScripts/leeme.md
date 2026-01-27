@@ -49,7 +49,7 @@ Especialmente útil en entornos Bancarios, Financieros, Medios de pago, Aplicaci
 
 **Beneficio clave:** Visibilidad total de la actividad real de la base de datos https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/operacion/monitor_BD_resultado.png
 
-### Monitoreo de disponibilidad de servidor y aplicación (PowerShell) 📈
+### Monitoreo de disponibilidad de servidores y aplicación - base de datos (PowerShell) 📈
 **Archivo de salida:** `[Logs_disponibilidad.txt]`. Este script valida:
 1. 🖥️ Estado del servidor físico ->  (online / offline).
 2. 🌐 Disponibilidad real de la aplicación -> validando si el puerto TCP está escuchando.
@@ -57,10 +57,10 @@ Especialmente útil en entornos Bancarios, Financieros, Medios de pago, Aplicaci
 Estados detectados:
 * ✅ Servidor online
 * ❌ Servidor offline
-* ❌ Puerto inaccesible (probablemente por Firewall, IIS detenido, pool caído)
+* ❌ Puerto inaccesible (probablemente por Firewall, IIS detenido, pool caído, servicio inactivo)
 * ✅ Aplicación escuchando correctamente
 
-**Diferencial importante:** --> No asumir que un servidor encendido implica una aplicación disponible https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/operacion/monitor_WS_resultado.png
+**Diferencial importante:** --> No asumir que un servidor encendido implica una aplicación disponible https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/operacion/disponibilidad_monitor_resultado.png
 
 ### Monitoreo de memoria RAM y procesos (PowerShell / Python) 📈
 **Archivo de salida:** `log_memoria.txt`. Este módulo monitorea en tiempo real:
