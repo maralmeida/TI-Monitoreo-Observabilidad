@@ -1,0 +1,21 @@
+[2026-01-28 16:24:39] --- Iniciando Proceso Completo de Restauración ---
+[2026-01-28 16:26:38] --- Iniciando Proceso Completo de Restauración ---
+[2026-01-28 16:26:38]  ÉXITO: Poner DB en modo SINGLE_USER (Desconectar otros)
+[2026-01-28 16:26:39]  ÉXITO: Restaurar SitioPruebas desde backup
+[2026-01-28 16:26:39]  ÉXITO: Poner DB en modo MULTI_USER (Habilitar acceso)
+[2026-01-28 16:26:39]  ERROR en Configurar y vincular usuario sitioapp_php: 
+[2026-01-28 16:26:39]  PROCESO FINALIZADO CON ÉXITO. La app ya puede conectar.
+[2026-01-28 16:51:03] --- Iniciando restauración ---
+[2026-01-28 16:51:03]  ÉXITO: Desconectar usuarios (SINGLE_USER)
+[2026-01-28 16:51:03]  ÉXITO: Restaurar archivo .bak
+[2026-01-28 16:51:03]  ÉXITO: Habilitar accesos (MULTI_USER)
+[2026-01-28 16:51:03]  ÉXITO: Verificar Login en Servidor
+[2026-01-28 16:51:04]  ÉXITO: Vincular permisos a sitioapp_php
+[2026-01-28 16:51:04] --- PROCESO FINALIZADO ---
+[2026-01-28 16:55:31] --- Iniciando restauración ---
+[2026-01-28 16:55:31]  ÉXITO: Desconectar usuarios (SINGLE_USER)
+[2026-01-28 16:55:31]  ÉXITO: Restaurar archivo .bak
+[2026-01-28 16:55:32]  ÉXITO: Habilitar accesos (MULTI_USER)
+[2026-01-28 16:55:32]  ÉXITO: Verificar Login en Servidor
+[2026-01-28 16:55:32]  ÉXITO: Vincular permisos a sitioapp_php
+[2026-01-28 16:55:32] --- PROCESO FINALIZADO ---
