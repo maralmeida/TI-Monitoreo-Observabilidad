@@ -27,3 +27,5 @@ Construí una solución basada en Python para automatizar el backup y la restaur
 * Python 3.13.7 o superior.
 * SQL Server Command Line Utilities (sqlcmd) configurado en el PATH.
 * Permisos de Administración de la Base de Datos (sysadmin / backup operator) para el usuario de ejecución de script.
+* ajustar rutas de lectura y almacenamiento de componentes.
+* ajustar datos de usuarios.
