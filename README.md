@@ -3,6 +3,10 @@
 Encontrarán proyectos que simulan operaciones de administración de sistemas, análisis de performance, DevOps y Observabilidad de ambientes productivos:
 * (Performance Anlyst) Monitoreo de disponibilidad de Aplicaciones, performance de memoria y actividad de Base de Datos vía scripts de automatización Bash, PowerShell y Python "https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/leeme.md"
 
+* Atomatización del ciclo de vida de restauración de base de datos en SQL Server mediante Python, gestionando la desconexión de usuarios, la consistencia de datos y la sincronización de permisos. Se puede integrar con pipeline CI/CD con Ansible y GitHub Runners, eliminando errores manuales y asegurando la disponibilidad inmediata de la base de datos en entornos de pruebas "https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/operacion/respaldobd/leeme.md" 
+
+¿Te gustaría que te ayude a redactar
+
 * (SysAdmin) Aplicación cliente servidor de ingreso de información de usuarios y almacenamiento persistente, usando infraestructura virtualizada, seguridad con autenticación mixta, middleware php e infrestructura de red TCP/IP "https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AppProduccion-RegistroUsuarios/leeme.md"
 
 * Trazabilidad de servicios mediante generación de logs e identificadores únicos por componente para su análisis, detección de fallos "https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/TrazabilidadyLogs/leeme.md"
