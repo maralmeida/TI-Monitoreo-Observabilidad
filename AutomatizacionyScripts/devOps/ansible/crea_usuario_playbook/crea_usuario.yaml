@@ -1,0 +1,38 @@
+---
+- name: Configurar usuario de automatización
+  hosts: all                  # Se ejecuta en los hosts del grupo de tu inventario (validar con inventary.ini)
+  become: true                # asigna permisos root
+  
+  vars:
+    # Esta variable busca el contenido de la llave pública en el Nodo Control para luego pegarla en el servidor remoto.
+    public_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+  tasks:
+    # 1. Los usuarios en Linux deben pertenecer a un grupo primario.
+    - name: 1. Crear el grupo de sistema 'ansible'
+      ansible.builtin.group:
+        name: ansible          # Nombre del grupo
+        state: present         # Asegura que el grupo exista
+
+    # 2. Crea el usuario que usará Ansible
+    - name: 2. Crear el usuario de servicio 'ansible'
+      ansible.builtin.user:
+        name: ansible          # El nombre del usuario, modificar en ejecuta_playbook.yaml si se cambia
+        group: ansible         # Lo asignamos al grupo creado arriba
+        shell: /bin/bash       # Le damos acceso a la terminal bash
+        create_home: yes       # Le crea su carpeta en /home/ansible (necesario para las llaves SSH)
+        state: present         # Asegura que el usuario sea creado
+
+    # 3. Ansible no puede "escribir" la clave en un prompt interactivo de sudo entonces:
+    - name: 3. Configurar sudo sin contraseña para el usuario ansible
+      ansible.builtin.copy:
+        content: "ansible ALL=(ALL) NOPASSWD:ALL"
+        dest: /etc/sudoers.d/ansible    # Creamos un archivo separado para no ensuciar /etc/sudoers
+        mode: '0440'                    # Permisos de solo lectura para seguridad (estándar de sudoers)
+
+    # 4. Copia llave publica al servidor para ingreso de usuario 'ansible' sin contraseña desde el Nodo Control.
+    - name: 4. Instalar la llave SSH pública en el servidor remoto
+      ansible.builtin.authorized_key:
+        user: ansible          # ¿A qué usuario le damos la llave?
+        state: present         # Asegura que la llave esté en el archivo authorized_keys
+        key: "{{ public_key }}" # El contenido de la llave que leímos en la sección 'vars'
