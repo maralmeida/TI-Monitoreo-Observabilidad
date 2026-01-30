@@ -2,7 +2,7 @@
 
 Encontrarán proyectos que simulan operaciones de administración de sistemas, análisis de performance, DevOps y Observabilidad de ambientes productivos:
 
-* Automatización de creación de usuario para la configuración general de servidores con Ansible mediante GitHub Actions en nodos Ubuntu distribuidos en distintas subredes. Logré una infraestructura autoreparable e idempotente que garantiza la consistencia de permisos sudo sin intervención manual, enfocándome en la seguridad y escalabilidad de la gestión de servidores mediante IaC, logrando un despliegue consistente y autoreparable "https://github.com/maralmeida/TI-Monitoreo-Observabilidad/tree/main/AutomatizacionyScripts/devOps/ansible/crea_usuario_playbook"
+* Automatización de creación de usuario para la configuración general de servidores con Ansible mediante GitHub Actions en nodos Ubuntu distribuidos en distintas subredes. Genero una infraestructura autoreparable e idempotente que garantiza la consistencia de permisos sudo sin intervención manual, enfocándome en la seguridad y escalabilidad de la gestión de servidores mediante IaC  "https://github.com/maralmeida/TI-Monitoreo-Observabilidad/tree/main/AutomatizacionyScripts/devOps/ansible/crea_usuario_playbook"
   
 * (Performance Anlyst) Monitoreo de disponibilidad de Aplicaciones, performance de memoria y actividad de Base de Datos vía scripts de automatización Bash, PowerShell y Python "https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/leeme.md"
 
@@ -16,7 +16,7 @@ Encontrarán proyectos que simulan operaciones de administración de sistemas, a
   
 
 ### Tecnologías usadas:
-* Back end: nodeJS, pino, UUIDv4, APIs rest, JS, MSSQL, TCP/IP, Hyper-V, Windows server, Ubuntu Linux Server, Firewall windows
+* Back end: nodeJS, pino, UUIDv4, APIs rest, JS, MSSQL, TCP/IP, Hyper-V, Windows server, Ubuntu Linux Server, Firewall windows, SSH Keys
 * front end: HTML, CSS, PHP, JS
-* Automatización: Bash, PowerShell, Python, JSON
+* Automatización: Bash, PowerShell, Python, Ansible, Github Actions, YAML
 * visualización estratégica con powerBI realizable en stacks de observabilidad y monitoreo
