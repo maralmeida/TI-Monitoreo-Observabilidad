@@ -1,6 +1,6 @@
 ---
 - name: Configurar usuario de automatización
-  hosts: all                  # Se ejecuta en los hosts del grupo de tu inventario (validar con inventary.ini)
+  hosts: all                  # Se ejecuta en los hosts del grupo del inventario (validar con inventary.ini)
   become: true                # asigna permisos root
   
   vars:
