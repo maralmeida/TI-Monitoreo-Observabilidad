@@ -1,6 +1,9 @@
 # 🔎🌐 Operaciones de TI, Monitoreo, Observabilidad
 
 Encontrarán proyectos que simulan operaciones de administración de sistemas, análisis de performance, DevOps y Observabilidad de ambientes productivos:
+
+* Automatización de creación de usuario para la configuración general de servidores con Ansible mediante GitHub Actions en nodos Ubuntu distribuidos en distintas subredes. Logré una infraestructura autoreparable e idempotente que garantiza la consistencia de permisos sudo sin intervención manual, enfocándome en la seguridad y escalabilidad de la gestión de servidores mediante IaC, logrando un despliegue consistente y autoreparable "https://github.com/maralmeida/TI-Monitoreo-Observabilidad/tree/main/AutomatizacionyScripts/devOps/ansible/crea_usuario_playbook"
+  
 * (Performance Anlyst) Monitoreo de disponibilidad de Aplicaciones, performance de memoria y actividad de Base de Datos vía scripts de automatización Bash, PowerShell y Python "https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/leeme.md"
 
 * (SysAdmin) Automatización del ciclo de vida de restauración de base de datos en SQL Server mediante Python, gestionando la desconexión de usuarios, la consistencia de datos y la sincronización de permisos. Se puede integrar con pipeline CI/CD con Ansible y GitHub Runners, eliminando errores manuales y asegurando la disponibilidad inmediata de la base de datos en entornos de pruebas "https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/operacion/respaldobd/leeme.md" 
