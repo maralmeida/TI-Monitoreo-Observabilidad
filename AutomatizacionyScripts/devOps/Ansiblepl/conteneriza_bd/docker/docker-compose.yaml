@@ -1,0 +1,23 @@
+#docker-compose file for SQL Server
+
+volumes:
+  mssql_data:
+
+services:
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql-server-sitiosapp
+    restart: always
+    ports:
+      - "1433:1433"
+    user: "0"  # Cambia temporalmente a "0" (root) para evitar problemas de permisos en la restauración
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Sql_Admin_2026!
+    volumes:
+      # Usamos carpetas locales relativas al docker-compose
+      # ruta_host:ruta_contenedor
+      - ./data:/var/opt/mssql/data
+      - ./backup:/var/opt/mssql/backup # Aquí es donde Ansible subió el .bak
+      - ./logs:/var/opt/mssql/log
+      - ./scripts:/var/opt/mssql/scripts # Aqui va el script de restauración
