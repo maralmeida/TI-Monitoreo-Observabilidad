@@ -22,8 +22,8 @@ Monitoreo de Disponibilidad y Rendimiento. El dashboard permite visualizar de fo
 * 3 -> Volumen en el Tiempo: Gráfico de líneas para identificar picos operativos en rangos de tiempo específicos.
 
 ### Resultados:
-  * https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/root-cause-analysis/1.1-Gerencial-DisponibilidadAppVentas.png
-  * https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/root-cause-analysis/1.2-Gerencial-DisponibilidadAppVentas-Desglose.png
+  * https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/rca-analysis/1.1-Gerencial-DisponibilidadAppVentas.png
+  * https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/rca-analysis/1.2-Gerencial-DisponibilidadAppVentas-Desglose.png
 
 ### 💡 Valor para la Gestión (Business Value)
 Este dashboard no solo muestra fallos, sino que habilita:
