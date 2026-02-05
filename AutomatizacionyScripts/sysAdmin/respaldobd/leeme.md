@@ -7,11 +7,11 @@ Construí una solución basada en Python para automatizar el backup y la restaur
 * Trazabilidad: El sistema de logs permite monitorear el estado de la base de datos de forma remota.
 
 ### 📂 Scripts y componentes necesarios:
-1- respaldo.py: Script automatizado que genera el archivo .bak, lo valida y lo mueve a una ubicación segura (File Server sugerido), resultado: https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/operacion/respaldobd/respaldo_resultado.png
+1- respaldo.py: Script automatizado que genera el archivo .bak, lo valida y lo mueve a una ubicación segura (File Server sugerido), resultado: https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/sysAdmin/respaldobd/respaldo_resultado.png
 
-2- restaura.py: Script de restauración de la base que gestiona la desconexión de usuarios, la restauración física y la sincronización de permisos de la aplicación (solución de usuarios huérfanos), resultado: https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/operacion/respaldobd/restauracion_resultado.png
+2- restaura.py: Script de restauración de la base que gestiona la desconexión de usuarios, la restauración física y la sincronización de permisos de la aplicación (solución de usuarios huérfanos), resultado: https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/sysAdmin/respaldobd/restauracion_resultado.png
 
-3- SitioPruebas.bak: Artefacto de base de datos listo para ser desplegado (base portable). Resultado de restauración: https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/operacion/respaldobd/bd_funcional_resultado.png
+3- SitioPruebas.bak: Artefacto de base de datos listo para ser desplegado (base portable). Resultado de restauración: https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/sysAdmin/respaldobd/bd_funcional_resultado.png
 
 4- ruta/logs: Directorio que almacena logs que registran el éxito o error de cada operación con marcas de tiempo.
 
