@@ -38,7 +38,7 @@ Estados detectados:
 * ❌ Puerto inaccesible (probablemente por Firewall, IIS detenido, pool caído, servicio inactivo)
 * ✅ Aplicación escuchando correctamente
 
-**Diferencial importante:** --> No asumir que un servidor encendido implica una aplicación disponible https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/operacion/disponibilidad_monitor_resultado.png
+**Diferencial importante:** --> No asumir que un servidor encendido implica una aplicación disponible https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/sysAdmin/disponibilidad-ram-monitor/disponibilidad_monitor_resultado.png
 
 ### Monitoreo de consumo de Memoria RAM y procesos 📈
 **Archivo de salida:** `ram_monitor.log`. Este módulo monitorea en tiempo real:
@@ -50,7 +50,7 @@ Cuando el consumo sobrepasa el umbral, registra automáticamente:
 * Top de procesos consumidores de memoria 
 * Consumo exacto en MB
 
-**Beneficio clave:** Permite actuar antes de un colapso del sistema operativo https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/operacion/ram_memoria_monitor_resultado.png
+**Beneficio clave:** Permite actuar antes de un colapso del sistema operativo https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/sysAdmin/disponibilidad-ram-monitor/ram_memoria_monitor_resultado.png
 
 ### Monitoreo de Base de Datos (Python + SQL) 📈
 **Archivo de salida:** `resultados_160712.json` . Este módulo ejecuta consultas SQL que permiten:
@@ -63,7 +63,7 @@ Cuando el consumo sobrepasa el umbral, registra automáticamente:
 * Identificación de usuarios humanos vs servicios
 * Tamaño de archivo .mdf y .ldf para **Control de crecimiento de archivos**
 
-**Beneficio clave:** Visibilidad total de la actividad real de la base de datos https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/operacion/monitor_BD_resultado.png
+**Beneficio clave:** Visibilidad de la actividad real de la base de datos https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/AutomatizacionyScripts/sysAdmin/monitoreo-SQLserver-viaPython/monitor_BD_resultado.png
 
 ---
 ##  ⚠️  Requisitos para que funcione
