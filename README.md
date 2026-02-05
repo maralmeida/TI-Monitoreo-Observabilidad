@@ -10,7 +10,7 @@ Encontrarán proyectos que simulan operaciones de administración de sistemas, a
 
 * (SysAdmin) Aplicación cliente servidor de ingreso de información de usuarios y almacenamiento persistente, usando infraestructura virtualizada, seguridad con autenticación mixta, middleware php e infrestructura de red TCP/IP "https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/registrousuariosapp/leeme.md"
   
-* RCA dashboard que elimina el "ruido operativo" y ayuda a mejorar el cumplimiento de los Objetivos de Nivel de Servicio (SLO) mediante la transformación de datos crudos de logs en información estratégica "https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/root-cause-analysis/leeme.md"
+* RCA dashboard que elimina el "ruido operativo" y ayuda a mejorar el cumplimiento de los Objetivos de Nivel de Servicio (SLO) mediante la transformación de datos crudos de logs en información estratégica "https://github.com/maralmeida/TI-Monitoreo-Observabilidad/blob/main/rca-analysis/leeme.md"
   
 
 ### Tecnologías usadas:
