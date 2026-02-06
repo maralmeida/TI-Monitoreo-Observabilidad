@@ -1,97 +1,111 @@
 - name: Contenerización de Base de Datos con Ansible via bak-python script y Docker Compose
-  hosts: dbservers
+  hosts: "{{TARGET_GROUP}}"   #paso valor desde variable en workflow de github actions
   become: yes
   become_method: sudo
   
   vars:
-    BACKUPBD_NAME: "SitioPruebas_2026-01-28_1640.bak"
-    REPOPATH_BACKUP_BD: "contenerizabd"
-    DEST_PATH: "/var/opt/mssql"
-    RESTORE_SCRIPT: "restaurabdmssql.py"
-    LOG_EVIDENCIA: "/var/opt/mssql/logs/ansible_mssql_deploydocker.log"
+    SRC_ENV: "{{ lookup('env', 'GITHUB_WORKSPACE') }}/Ansiblelb/conteneriza_bd"
+    SRC_RSRS_PATH: "{{ SRC_ENV }}/recursos" 
+    SRC_DOCKER_PATH: "{{ SRC_ENV }}/docker"
+    
+    BACKUP_FILE_NAME: "SitioPruebas_2026-01-28_1640.bak"
+    RESTORE_SCRIPT_NAME: "restaurabdmssql.py"
+    DCOMPOSE_FILE_NAME: "docker-compose.yaml"
+    DEST_RESOURCES_PATH: "/var/opt/mssql"
+    
+    #LOG_EVIDENCIA: "/var/opt/mssql/logs/ansible_mssql_deploy-docker.log"
 
   tasks:
 
-    - name: "Revisión estado anterior"
-      shell: |
-        echo "--- Estado pre-despliegue ---" > {{ LOG_EVIDENCIA }}
-        echo "Fecha: $(date)" >> {{ LOG_EVIDENCIA }}
-        echo "Contenedores mssql actuales:" >> {{ LOG_EVIDENCIA }}
-        docker ps -a --filter "name=mssql-server-sitiosapp" >> {{ LOG_EVIDENCIA }}
-      ignore_errors: yes
-
-    - name: "0. Preparar entorno para actualización"
-      shell: |
-        # Solo bajamos el contenedor, NO borramos volúmenes (-v)
-        cd {{ DEST_PATH }}/scripts && docker compose down || true
-      ignore_errors: yes
+    - name: "0. Instalar dependencias basicas en el Host"
+      apt:
+        name: 
+          - python3
+        state: present 
+        update_cache: yes
 
     - name: "1. Crear estructura de directorios (si no existe)"
       file:
         path: "{{ item }}"
         state: directory
-        # Importante: El ID 10001 es el usuario 'mssql' dentro del contenedor.
-        # Esto permite que el motor SQL tenga permisos para leer el .bak
+        # Importante: El ID 10001 es el usuario 'mssql' dentro del contenedor. Esto permite que el motor SQL tenga permisos para r-w
         owner: "10001" 
         group: "root"
-        mode: '0775'
+        mode: '0777'
         recurse: yes
       loop:
-        - "{{ DEST_PATH }}"
-        - "{{ DEST_PATH }}/data"
-        - "{{ DEST_PATH }}/backup"
-        - "{{ DEST_PATH }}/scripts"
-        - "{{ DEST_PATH }}/logs"
+        - "{{ DEST_RESOURCES_PATH }}"
+        - "{{ DEST_RESOURCES_PATH }}/data"
+        - "{{ DEST_RESOURCES_PATH }}/backup"
+        - "{{ DEST_RESOURCES_PATH }}/scripts"
+        - "{{ DEST_RESOURCES_PATH }}/logs"
         
-    - name: "2. Instalar dependencias basicas en el Host"
-      apt:
-        name: 
-          - python3
-          # python3-pip y pyodbc ya no son obligatorios porque uso el script de 'docker exec'
-        state: present
-        update_cache: yes
-
-
-    - name: "3. Checkout de respaldo de bd al servidor"
+    - name: "2. Copia bd respaldo al servidor"
       ansible.builtin.copy:
-        src: "{{ REPOPATH_BACKUP_BD }}/{{ BACKUPBD_NAME }}" 
-        dest: "{{ DEST_PATH }}/backup/{{ BACKUPBD_NAME }}"
-        owner: "10001"
+        src: "{{ SRC_RSRS_PATH  }}/{{ BACKUP_FILE_NAME }}" 
+        dest: "{{ DEST_RESOURCES_PATH }}/backup/{{ BACKUP_FILE_NAME }}"
+        owner: "10001" # se asigna a 'mssql' dentro del contenedor para evitar problemas de permisos
         group: "root"
         mode: '0664'
 
-    - name: "4. Checkout de config files al servidor"
+    # no necesita owner 10001 porque esto lo ejecuta el nodo, no el contenedor
+    - name: "3. Copia recursos adicionales al servidor"
       ansible.builtin.copy:
         src: "{{ item.src }}"
-        dest: "{{ DEST_PATH }}/{{ item.dest }}" 
+        dest: "{{ item.dest }}" 
       loop:
-        - { src: "{{ REPOPATH_BACKUP_BD }}/docker-compose.yaml", dest: "scripts/docker-compose.yaml" }
-        - { src: "{{ REPOPATH_BACKUP_BD }}/{{ RESTORE_SCRIPT }}", dest: "scripts/{{ RESTORE_SCRIPT }}" }
+        - { src: "{{ SRC_DOCKER_PATH }}/{{ DCOMPOSE_FILE_NAME }}", dest: "{{ DEST_RESOURCES_PATH }}/scripts/{{ DCOMPOSE_FILE_NAME }}" }
+        - { src: "{{ SRC_RSRS_PATH }}/{{ RESTORE_SCRIPT_NAME }}", dest: "{{ DEST_RESOURCES_PATH }}/scripts/{{ RESTORE_SCRIPT_NAME }}" }
 
+    
+    - name: "4. Preparar entorno para actualización"
+      shell: |
+        # se ubica en carpeta con los recursos de trabajo, baja contenedor, NO borra volúmenes (-v) -> persistencia data
+        cd {{ DEST_RESOURCES_PATH }}/scripts && docker compose down || true
+      # si no econtrase nada por ser primera vez, fallaría pero se ignora el error
+      ignore_errors: yes 
+    
     - name: "5. Levantar el contenedor de base de datos"
+    # docker buscará el compose en la ruta indicada, en el está definido los volúmenes para:
+    # persistencia, logs y lectura del script de restauración y archivo de restauracion .bak
       community.docker.docker_compose_v2:
-        project_src: "{{ DEST_PATH }}/scripts"
+        project_src: "{{ DEST_RESOURCES_PATH }}/scripts"  #buscará el docker-compose 
+        files:
+          - "{{DCOMPOSE_FILE_NAME}}"
         state: present
 
-    - name: "5.1 ESPERA TÉCNICA: Aguardando inicio del motor SQL (60 segundos)" 
-      pause:
-        seconds: 60
-        prompt: "Esperando a que SQL Server termine de arrancar los servicios internos..."
+    - name: "5.1 ESPERA TÉCNICA: Aguardando puerto SQL (1433)"
+      wait_for:
+        port: 1433
+        host: "{{ inventory_hostname }}"
+        connect_timeout: 5
+        delay: 20      # <--- ESPERA 20 segundos antes de empezar a chequear
+        timeout: 120  # Si en 120 segundos no abre, da error
+      delegate_to: localhost # Ansible verifica desde donde corre
+      become: no # para que no pida autenticacion sudo
 
     - name: "5.2 Validar si la base de datos ya existe físicamente"
       stat:
-        path: "{{ DEST_PATH }}/data/SitioPruebas.mdf"
+        path: "{{ DEST_RESOURCES_PATH }}/data/SitioPruebas.mdf"
       register: db_status
 
-    - name: "6. Ejecutar restauración en docker (Solo si es instalación nueva o se borró el volumen)"
+    - name: "5.3 Limpieza de seguridad y espera de estabilidad"
       shell: |
-        # Ejecutamos el script que orquestará el 'docker exec'
-        python3 {{ DEST_PATH }}/scripts/{{ RESTORE_SCRIPT }}
+        chown -R 10001:root /var/opt/mssql/data
+        chown -R 10001:root /var/opt/mssql/logs
+        sleep 20
+      become: yes
+
+    - name: "6. Ejecutar restauración en docker (Solo si es instalación nueva o se borró el volumen)"
+      become: yes
+      shell: |
+        python3 {{ DEST_RESOURCES_PATH }}/scripts/{{ RESTORE_SCRIPT_NAME }}
       register: restore_out
       # Esta es la clave: Si el archivo .mdf existe, se salta esta tarea
       when: not db_status.stat.exists 
 
-    - name: 7. Debug de Restauración
+
+    - name: 7. Debug de script de restauración (si realizó cambios)
       debug:
         var: restore_out.stdout_lines
       # Agrega 'defined' para que no falle si la tarea 6 se saltó
@@ -99,15 +113,15 @@
 
     - name: "8. Registro de despligue (Post-Check)"
       shell: |
-        echo "--- REPORTE DE DESPLIEGUE ---" > {{ DEST_PATH }}/log/evidencia_despliegue.log
-        echo "Fecha: $(date)" >> {{ DEST_PATH }}/log/evidencia_despliegue.log
-        echo "Estado: {{ 'Base de datos ya existente (Persistente)' if db_status.stat.exists else 'Restauración realizada' }}" >> {{ DEST_PATH }}/evidencia_despliegue.log
-        docker ps --filter "name=mssql-server-sitiosapp" >> {{ DEST_PATH }}/log/evidencia_despliegue.log
+        echo "--- REPORTE DE DESPLIEGUE ---" > {{ DEST_RESOURCES_PATH }}/logs/despliegue_{{ ansible_date_time.iso8601_basic_short}}.log
+        echo "Fecha: $(date)" >> {{ DEST_RESOURCES_PATH }}/logs/despliegue_{{ ansible_date_time.date }}.log
+        echo "Estado: {{ 'Base de datos ya existente (persistente)' if db_status.stat.exists else 'Base de datos no existente - Restauración realizada' }}" >> {{ DEST_RESOURCES_PATH }}/logs/despliegue_{{ ansible_date_time.iso8601_basic_short}}.log
+        docker ps --filter "name=mssql-server-sitiosapp" >> {{ DEST_RESOURCES_PATH }}/logs/despliegue_{{ ansible_date_time.iso8601_basic_short}}.log
       ignore_errors: yes
 
     - name: "9. Recupera log"
       fetch:
-        src: "{{ DEST_PATH }}/log/evidencia_despliegue.log"
+        src: "{{ DEST_RESOURCES_PATH }}/logs/despliegue_{{ ansible_date_time.iso8601_basic_short}}.log"
         # guardará logs en con nombre del host en control node en carpeta default si no se especifica
         dest: "./logs/restaurabd_{{ inventory_hostname }}.log"
         flat: yes

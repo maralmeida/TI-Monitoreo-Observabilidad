@@ -17,64 +17,71 @@ APP_USER = "respaldabd"
 APP_PASS = "respaldabd"
 
 # --- NUEVOS USUARIOS DE LAS APPS ---
-# Usuario 1 (el que daba el error en el log)
+# Usuario 1
 PHP_USER_1 = "sitioapp_php"
 PHP_PASS_1 = "sitioapp_php" 
 
-# Usuario 2 (el de la otra app)
+# Usuario 2
 PHP_USER_2 = "usuario_php"
 PHP_PASS_2 = "usuario_php"
 
 def restaurar_base_de_datos():
     print(f"--- Iniciando Proceso en Contenedor: {CONTAINER_NAME} ---")
 
-    # SQL MULTI-PASO:
-    # 1. Crear logins en el servidor si no existen (Nivel Master)
-    # 2. Echar a todos de la DB actual para poder restaurar
-    # 3. Restaurar desde el archivo .bak
-    # 4. Vincular TODOS los usuarios de la DB con los logins del servidor (Auto_Fix)
-    sql_query = (
-        # Creamos los 3 logins en el servidor por si no existen
-        f"IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = '{APP_USER}') "
-        f"BEGIN CREATE LOGIN [{APP_USER}] WITH PASSWORD = '{APP_PASS}', CHECK_POLICY = OFF END; "
-        
-        f"IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = '{PHP_USER_1}') "
-        f"BEGIN CREATE LOGIN [{PHP_USER_1}] WITH PASSWORD = '{PHP_PASS_1}', CHECK_POLICY = OFF END; "
-        
-        f"IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = '{PHP_USER_2}') "
-        f"BEGIN CREATE LOGIN [{PHP_USER_2}] WITH PASSWORD = '{PHP_PASS_2}', CHECK_POLICY = OFF END; "
+    # --- CAMBIO IMPORTANTE: DIVIDIMOS LA CONSULTA EN BLOQUES ---
+    # Esto evita el error "Database does not exist" al inicio del script.
 
-        # Preparar la DB y Restaurar
+    # 1. Crear logins en el servidor (Nivel Master - Siempre funciona)
+    sql_logins = (
+        f"IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = '{APP_USER}') "
+        f"CREATE LOGIN [{APP_USER}] WITH PASSWORD = '{APP_PASS}',CHECK_POLICY = OFF; "
+        f"IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = '{PHP_USER_1}') "
+        f"CREATE LOGIN [{PHP_USER_1}] WITH PASSWORD = '{PHP_PASS_1}',CHECK_POLICY = OFF; "
+        f"IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = '{PHP_USER_2}') "
+        f"CREATE LOGIN [{PHP_USER_2}] WITH PASSWORD = '{PHP_PASS_2}', CHECK_POLICY = OFF; "
+    )
+
+    # 2. Echar a todos de la DB actual modod SINGLE_USER (SOLO SI EXISTE) y Restaurar
+    sql_restore = (
         f"IF EXISTS (SELECT * FROM sys.databases WHERE name = '{DB_NAME}') "
         f"BEGIN ALTER DATABASE [{DB_NAME}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE END; "
-        f"RESTORE DATABASE [{DB_NAME}] FROM DISK = N'{BACKUP_FILE}' WITH REPLACE; "
-        f"ALTER DATABASE [{DB_NAME}] SET MULTI_USER; "
+        f"RESTORE DATABASE [{DB_NAME}] FROM DISK='{BACKUP_FILE}' WITH REPLACE, "
+        f"MOVE 'SitioPruebas' TO '/var/opt/mssql/data/SitioPruebas.mdf', "
+        f"MOVE 'SitioPruebas_log' TO '/var/opt/mssql/data/SitioPruebas_log.ldf'; "
+    )
 
-        # Entrar a la DB restaurada y arreglar los usuarios huérfanos
+    # 3. Volver a MULTI_USER y Vincular TODOS los usuarios (Auto_Fix)
+    # Estos comandos se corren DESPUÉS de que la DB ya fue creada por el RESTORE.
+    sql_post = (
+        f"ALTER DATABASE [{DB_NAME}] SET MULTI_USER; "
         f"USE [{DB_NAME}]; "
         f"EXEC sp_change_users_login 'Auto_Fix', '{APP_USER}'; "
         f"EXEC sp_change_users_login 'Auto_Fix', '{PHP_USER_1}'; "
-        f"EXEC sp_change_users_login 'Auto_Fix', '{PHP_USER_2}';"
+        f"EXEC sp_change_users_login 'Auto_Fix', '{PHP_USER_2}'; "
     )
 
-
-    # Comando para ejecutar dentro de Docker
-    # Nota: He usado 'sqlcmd' a secas, si falla, usa '/opt/mssql-tools/bin/sqlcmd'
-    comando = (
-        f'docker exec -i {CONTAINER_NAME} '
-        f'/opt/mssql-tools18/bin/sqlcmd -b -S localhost -U {ADMIN_USER} -P {ADMIN_PASS} -C -Q "{sql_query}"'
-    )
+    # Lista de bloques para ejecutar en orden
+    bloques_sql = [sql_logins, sql_restore, sql_post]
 
     try:
-        print(f"Restaurando base de datos '{DB_NAME}'...")
-        subprocess.run(comando, shell=True, check=True)
-        print(f" ¡Éxito! DB restaurada y usuario '{APP_USER}','{PHP_USER_1}','{PHP_USER_2}' vinculado.")
+        for i, fragmento_sql in enumerate(bloques_sql):
+            # Agregamos comillas dobles a la contraseña para manejar caracteres especiales como '!'
+            comando = (
+                f'docker exec -i {CONTAINER_NAME} '
+                f'/opt/mssql-tools18/bin/sqlcmd -b -S localhost -U {ADMIN_USER} -P "{ADMIN_PASS}" -C -Q "{fragmento_sql}"'
+            )
+            
+            if i == 1: print(f"Restaurando base de datos '{DB_NAME}'...")
+            resultado = subprocess.run(comando, shell=True, check=True, capture_output=True, text=True)
+            if resultado.stdout: print(resultado.stdout)
+
+        print(f" ¡Éxito! DB restaurada y usuarios '{APP_USER}', '{PHP_USER_1}', '{PHP_USER_2}' vinculados.")
+        
     except subprocess.CalledProcessError as e:
         print(f" Error en la ejecución.")
-        print(f"Asegúrate de que el archivo {BACKUP_FILE} existe dentro del contenedor.")
+        print(f"STDOUT: {e.stdout}") # Salida normal de SQL
+        print(f"STDERR: {e.stderr}") # El error específico de SQL Server o Docker
         sys.exit(1)
 
 if __name__ == "__main__":
     restaurar_base_de_datos()
-
-
