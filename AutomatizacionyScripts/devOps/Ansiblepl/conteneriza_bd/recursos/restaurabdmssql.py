@@ -12,7 +12,7 @@ BACKUP_FILE = "/var/opt/mssql/backup/SitioPruebas_2026-01-28_1640.bak"
 ADMIN_USER = "sa"
 ADMIN_PASS = "Sql_Admin_2026!"
 
-# el usuario con db.backupoperator role para la aplicación
+# el usuario con db.backupoperator role para la aplicación // no se usa, solo mencion
 APP_USER = "respaldabd"
 APP_PASS = "respaldabd"
 
@@ -21,7 +21,7 @@ APP_PASS = "respaldabd"
 PHP_USER_1 = "sitioapp_php"
 PHP_PASS_1 = "sitioapp_php" 
 
-# Usuario 2
+# Usuario 2 // no se usa, solo mencion / si se vincula pero archivo general solo restaura SitioPrueba
 PHP_USER_2 = "usuario_php"
 PHP_PASS_2 = "usuario_php"
 
