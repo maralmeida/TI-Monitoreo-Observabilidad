@@ -1,20 +1,26 @@
 - name: Contenerización de Base de Datos con Ansible via bak-python script y Docker Compose
-  hosts: "{{TARGET_GROUP}}"   #paso valor desde variable en workflow de github actions
+  hosts: "{{TARGET_GROUP}}"   #paso valor desde variable de workflow de github actions
   become: yes
   become_method: sudo
   
+  vars_files:
+    - ../vars/vars_global.yml    #llamo fichero de variables a reutlizar en el pipe en templates jinja
+
   vars:
     SRC_ENV: "{{ lookup('env', 'GITHUB_WORKSPACE') }}/Ansiblelb/conteneriza_bd"
     SRC_RSRS_PATH: "{{ SRC_ENV }}/recursos" 
     SRC_DOCKER_PATH: "{{ SRC_ENV }}/docker"
     
+    #Solo se restaura una sola base de datos por el momento, validar reutilizabilidad con nuevas o más bases paralelas
     BACKUP_FILE_NAME: "SitioPruebas_2026-01-28_1640.bak"
-    RESTORE_SCRIPT_NAME: "restaurabdmssql.py"
-    DCOMPOSE_FILE_NAME: "docker-compose.yaml"
+    RESTORE_SCRIPT_NAME: "restaurabdmssql.py" #-> nombre del file que se creará desde template j2 
+    RESTORE_J2_SCRIPT_NAME: "restaurabdmssql.j2"
+    DCOMPOSE_FILE_NAME: "docker-compose.yaml"  #-> nombre del file que se creará desde template j2
+    DCOMPOSE_J2_FILE_NAME: "docker-compose.j2" 
     DEST_RESOURCES_PATH: "/var/opt/mssql"
-    
-    #LOG_EVIDENCIA: "/var/opt/mssql/logs/ansible_mssql_deploy-docker.log"
 
+    RESTAURACION_LOG: "{{ DEST_RESOURCES_PATH }}/logs/despliegue_{{ ansible_date_time.iso8601_basic_short}}.log"
+    
   tasks:
 
     - name: "0. Instalar dependencias basicas en el Host"
@@ -49,13 +55,16 @@
         mode: '0664'
 
     # no necesita owner 10001 porque esto lo ejecuta el nodo, no el contenedor
+    # pasamos variables desde jinja2 template
     - name: "3. Copia recursos adicionales al servidor"
-      ansible.builtin.copy:
+      ansible.builtin.template:
         src: "{{ item.src }}"
         dest: "{{ item.dest }}" 
+        owner: "10001"
+        mode: "{{ item.mode | default('0644') }}"
       loop:
-        - { src: "{{ SRC_DOCKER_PATH }}/{{ DCOMPOSE_FILE_NAME }}", dest: "{{ DEST_RESOURCES_PATH }}/scripts/{{ DCOMPOSE_FILE_NAME }}" }
-        - { src: "{{ SRC_RSRS_PATH }}/{{ RESTORE_SCRIPT_NAME }}", dest: "{{ DEST_RESOURCES_PATH }}/scripts/{{ RESTORE_SCRIPT_NAME }}" }
+        - { src: "{{ SRC_DOCKER_PATH }}/{{ DCOMPOSE_J2_FILE_NAME }}", dest: "{{ DEST_RESOURCES_PATH }}/scripts/{{ DCOMPOSE_FILE_NAME }}", mode: "0644" }
+        - { src: "{{ SRC_RSRS_PATH }}/{{ RESTORE_J2_SCRIPT_NAME }}", dest: "{{ DEST_RESOURCES_PATH }}/scripts/{{ RESTORE_SCRIPT_NAME }}", mode: "0644" }
 
     
     - name: "4. Preparar entorno para actualización"
@@ -110,18 +119,26 @@
         var: restore_out.stdout_lines
       # Agrega 'defined' para que no falle si la tarea 6 se saltó
       when: db_status.stat.exists == False and restore_out is defined 
+    
+    - name: "7.5. Obtener nombres de bases de datos"
+      shell: |
+        docker exec "{{CONTENEDOR_NOMBRE}}" /opt/mssql-tools18/bin/sqlcmd -S localhost -U "{{ DB_ADMIN_USER }}" -P "{{ MSSQL_PASSWORD_SA }}" -C -h -1 -W -Q "SET NOCOUNT ON; SELECT name FROM sys.databases "
+      register: db_names 
+      ignore_errors: yes
 
     - name: "8. Registro de despligue (Post-Check)"
       shell: |
-        echo "--- REPORTE DE DESPLIEGUE ---" > {{ DEST_RESOURCES_PATH }}/logs/despliegue_{{ ansible_date_time.iso8601_basic_short}}.log
-        echo "Fecha: $(date)" >> {{ DEST_RESOURCES_PATH }}/logs/despliegue_{{ ansible_date_time.date }}.log
-        echo "Estado: {{ 'Base de datos ya existente (persistente)' if db_status.stat.exists else 'Base de datos no existente - Restauración realizada' }}" >> {{ DEST_RESOURCES_PATH }}/logs/despliegue_{{ ansible_date_time.iso8601_basic_short}}.log
-        docker ps --filter "name=mssql-server-sitiosapp" >> {{ DEST_RESOURCES_PATH }}/logs/despliegue_{{ ansible_date_time.iso8601_basic_short}}.log
+        echo "--- REPORTE DE DESPLIEGUE ---" > "{{RESTAURACION_LOG}}"
+        echo "Fecha: $(date)" >> "{{RESTAURACION_LOG}}"
+        echo "Estado: {{ 'Base de datos ya existente (persistente)' if db_status.stat.exists else 'Base de datos no existente - Restauración realizada' }}" >> "{{RESTAURACION_LOG}}"
+        echo "--- BASES DE DATOS ACTUALES ---" >> "{{RESTAURACION_LOG}}"
+        echo "{{ db_names.stdout | default('No se pudo obtener la lista') }}" >> "{{RESTAURACION_LOG}}"
+        docker ps --filter "name={{CONTENEDOR_NOMBRE}}" >> "{{RESTAURACION_LOG}}"
       ignore_errors: yes
 
     - name: "9. Recupera log"
       fetch:
-        src: "{{ DEST_RESOURCES_PATH }}/logs/despliegue_{{ ansible_date_time.iso8601_basic_short}}.log"
+        src: "{{RESTAURACION_LOG}}"
         # guardará logs en con nombre del host en control node en carpeta default si no se especifica
-        dest: "./logs/restaurabd_{{ inventory_hostname }}.log"
+        dest: "user2/respaldalogs/restaurabd_{{ inventory_hostname }}.log"
         flat: yes

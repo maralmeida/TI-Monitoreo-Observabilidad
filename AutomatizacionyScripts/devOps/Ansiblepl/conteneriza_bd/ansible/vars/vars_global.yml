@@ -1,0 +1,12 @@
+# contenedor datos generales y administrativos  
+CONTENEDOR_NOMBRE: "mssql-server"
+DB_ADMIN_USER: "sa"
+MSSQL_PASSWORD_SA: "Sql_Admin_2026!"
+
+#DB_NOMBRE: "SitioPruebas"
+
+# Logins que deben existir en el servidor de BD 
+BD_APP_USERS:
+    "respaldabd": "respaldabd"
+    "sitioapp_php": "sitioapp_php"
+    "usuario_php": "usuario_php"
