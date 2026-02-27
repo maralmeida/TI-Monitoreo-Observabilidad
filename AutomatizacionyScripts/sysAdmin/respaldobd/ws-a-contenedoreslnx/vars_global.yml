@@ -1,0 +1,21 @@
+# contenedor datos generales y administrativos  
+CONTENEDOR_NOMBRE: "mssql-server"
+DB_ADMIN_USER: "sa"
+MSSQL_PASSWORD_SA: "Sql_Admin_2026!"
+
+
+# base a restaurar, scripts restauran una base de datos a la vez, cambiar nombre de ser necesario
+DB_NOMBRE: "UsuariosApp"
+
+# ruta de respaldo a usar hardcodeada en docker-compose.j2, cambiar nombre de ser necesario
+BACKUP_FILE_PATH: "/var/opt/mssql/backup/UsuariosApp_2026-02-20_1533.bak"
+
+# usuario de aplicación
+APP_USER : "usuario_php"
+APP_PASS : "usuario_php" 
+
+# Logins que deben existir en el servidor de BD 
+#BD_APP_USERS:
+#    "respaldabd": "respaldabd"
+#    "sitioapp_php": "sitioapp_php"
+#    "usuario_php": "usuario_php"

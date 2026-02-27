@@ -1,0 +1,21 @@
+#docker-compose file for SQL Server
+
+volumes:
+  mssql_data:
+
+services:
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: "{{ CONTENEDOR_NOMBRE }}"
+    restart: always
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD={{ MSSQL_PASSWORD_SA }}
+    volumes:
+      # ruta_host:ruta_contenedor
+      - /var/opt/mssql/data:/var/opt/mssql/data
+      - /var/opt/mssql/backup:/var/opt/mssql/backup # Aquí se guardar el .bak, validar con ruta en script .py de ser el caso
+      - /var/opt/mssql/logs:/var/opt/mssql/logs
+      - /var/opt/mssql/scripts:/var/opt/mssql/scripts # Aqui va el script de restauración
