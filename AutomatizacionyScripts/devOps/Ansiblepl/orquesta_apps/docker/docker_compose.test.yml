@@ -1,0 +1,46 @@
+services:
+    sitiopruebas_app:
+        image: mariettar/accesositiosweb:latest
+        container_name: accesositios
+        restart: always
+        ports: 
+            # nav:contenedor
+            - "48002:80"
+        env_file:
+            # Mapeamos las variables del app.env a las variables genéricas en PHP
+            - apps.env 
+        environment:
+            # Mapeamos las variables del app.env a las variables genéricas en PHP -> phpcode=app.env
+            - DB_HOST=${DB_HOST}
+            - DB_PORT=${DB_PORT}
+            - DB_USER=${SITIOS_DB_USER}
+            - DB_PASS=${SITIOS_DB_USER_PASSWORD}
+        healthcheck:
+            # Verificamos que el contenedor esté disponible
+            test: ["CMD", "curl", "-f", "http://localhost:80/healthcheck"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+
+    registrousuarios_app:
+        image: mariettar/registrousuarios:latest
+        container_name: registrousuarios
+        restart: always
+        ports:
+            # nav:contenedor
+            - "47001:80"
+        env_file:
+        # Mapeamos las variables del app.env a las variables genéricas en PHP
+            - apps.env
+        environment:
+        # Mapeamos las variables del app.env a las variables genéricas en PHP -> phpcode=app.env
+            - DB_HOST=${DB_HOST}
+            - DB_PORT=${DB_PORT}
+            - DB_USER=${REGISTRO_DB_USER}
+            - DB_PASS=${REGISTRO_DB_USER_PASSWORD}
+        healthcheck:
+            # Verificamos que el contenedor esté disponible
+            test: ["CMD", "curl", "-f", "http://localhost:80/healthcheck"] #
+            interval: 30s
+            timeout: 10s
+            retries: 3

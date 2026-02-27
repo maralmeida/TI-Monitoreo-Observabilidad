@@ -1,0 +1,33 @@
+---
+- name: levanta contenedores de aplicaciones con Docker Compose
+  hosts: "{{TARGET_GROUP}}"   #paso valor desde variable de workflow de github actions
+  become: yes
+  vars:
+    project_path: "/opt/labs_mis_apps"
+
+  tasks:
+    - name: Crear carpeta del proyecto
+      file:
+        path: "{{ project_path }}"
+        state: directory
+        mode: '0755'
+
+    - name: Copiar archivo de variables (desencriptado por Vault)
+      copy:
+        src: "{{ APP_VAULT_PATH }}/apps.env" #cambio nombre de apps.env a.env 
+        dest: "{{ project_path }}/.env"
+        mode: '0600'
+
+    - name: Copiar Docker Compose   
+      copy:
+        src: "{{ DOCKER_COMPOSE_PATH }}/docker_compose.test.yml"
+        dest: "{{ project_path }}/docker_compose.test.yml"
+
+    - name: Levantar contenedores
+      community.docker.docker_compose_v2:
+        project_src: "{{ project_path }}"
+        files:
+          - "docker_compose.test.yml"  # <--- Indicamos el nombre exacto del archivo, sin el da error
+        state: present
+        pull: always
+        
