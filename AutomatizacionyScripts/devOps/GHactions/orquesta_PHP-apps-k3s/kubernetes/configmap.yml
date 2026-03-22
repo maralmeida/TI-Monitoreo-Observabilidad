@@ -1,0 +1,10 @@
+# almacena variables de entorno públicas
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apps-config
+  namespace: apps-php
+data:
+  DB_HOST: "192.168.200.38"   # debe ir nombre de dns interno de kubernetes por si nombre no carga validar
+  DB_PORT: "1433" 

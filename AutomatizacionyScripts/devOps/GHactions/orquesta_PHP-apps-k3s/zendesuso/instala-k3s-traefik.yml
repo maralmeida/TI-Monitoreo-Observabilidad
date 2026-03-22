@@ -1,0 +1,93 @@
+---
+- name: Preparar Nodos Trabajadores (detiene y deshabilita Docker, desactiva SWAP) .
+  hosts: "{{TARGET_GROUP}}"
+  become: true
+  any_errors_fatal: true # Detiene todo si un nodo falla críticamente: si control falla, no sigue con los workers
+
+  tasks:
+    - name: Detener Docker en Workers para liberar RAM
+      systemd:
+        name: docker
+        state: stopped
+        enabled: false
+      failed_when: false # No fallará si Docker no está instalado o ya está detenido
+
+    - name: Desactivar SWAP
+      command: swapoff -a
+      when: ansible_swaptotal_mb > 0
+
+
+# Traefik se instala automáticamente con K3s, pero para asegurar que esté habilitado o configurarlo, agregar tareas adicionales aquí.
+
+
+- name: Instalar K3s Maestro
+  hosts: "192.168.200.6"    # "control-nodes" si hay resolucion DNS o /etc/hosts, mi dns esta apagado por eso uso IP directa
+  become: true
+  tasks:
+    - name: Instalar K3s en control node
+      shell: |
+        curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server \
+        --write-kubeconfig-mode 644" sh -
+      args:
+        creates: /usr/local/bin/k3s
+
+    - name: Obtener Token para los trabajadores
+      command: cat /var/lib/rancher/k3s/server/node-token
+      register: cluster_token
+
+
+- name: Instalar k3s y unir workers al Maestro
+  hosts: "worker-nodes"
+  become: true
+  vars:
+    # IMPORTANTE: Cambio este nombre por IP PRIVADA de mi servidor de Ansible por reutilización con control node k3S (usar dns name si hay resolucion)
+    master_ip: "192.168.200.6" 
+    token: "{{ hostvars[groups['control-nodes'][0]]['cluster_token']['stdout'] }}"
+  tasks:
+    - name: Unir nodos
+      shell: |
+        curl -sfL https://get.k3s.io | K3S_URL=https://{{ master_ip }}:6443 \
+        K3S_TOKEN={{ token }} sh -
+      args:
+        creates: /usr/local/bin/k3s
+
+
+- name: Verificar el Estado del Clúster K3s
+  hosts: "control-nodes" # Solo necesitamos ejecutar esto en el maestro
+  become: true
+  tasks:
+    - name: 1. Comprobar que el servicio k3s está activo
+      ansible.builtin.systemd:
+        name: k3s
+      register: k3s_service_status
+
+    - name: Mostrar estado del servicio
+      ansible.builtin.debug:
+        msg: "El estado de K3s es: {{ k3s_service_status.status.ActiveState }}"
+
+    - name: 2. Esperar a que los nodos estén en estado 'Ready'
+      ansible.builtin.shell: kubectl get nodes
+      register: nodes_output
+      until: nodes_output.stdout.find("NotReady") == -1
+      retries: 10
+      delay: 5
+
+    - name: 3. Listar nodos instalados y su estado
+      ansible.builtin.command: kubectl get nodes -o wide
+      register: cluster_nodes
+
+    - name: Mostrar tabla de nodos
+      ansible.builtin.debug:
+        var: cluster_nodes.stdout_lines
+
+    - name: 4. Verificar pods del sistema (Traefik, DNS, Metrics)
+      ansible.builtin.command: kubectl get pods -A
+      register: cluster_pods
+
+    - name: Mostrar pods en ejecución
+      ansible.builtin.debug:
+        var: cluster_pods.stdout_lines
+
+    - name: Confirmación Final
+      ansible.builtin.debug:
+        msg: "¡Clúster K3s listo para recibir trabajo! Traefik y Nodos operativos."

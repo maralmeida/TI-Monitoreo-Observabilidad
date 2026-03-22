@@ -1,0 +1,53 @@
+name: Deploy PHP Apps usando K3s
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: [control-server]
+
+    steps:
+      # 1. Traer el código y los archivos YAML del repo al servidor
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      # 2. Ejecutar la secuencia de comandos de Kubernetes
+      - name: Aplicar comandos Kubectl
+        run: |
+          echo "--- Iniciando Despliegue ---"
+
+          # Crear el namespace (si no existe)
+          kubectl create namespace apps-php --dry-run=client -o yaml | kubectl apply -f -
+
+          # Cargar ConfigMaps y Secrets (La configuración)
+          kubectl apply -f orquesta_PHP-apps-k3s/kubernetes/configmap.yml
+          kubectl apply -f orquesta_PHP-apps-k3s/vault/secrets.yml
+
+          # Lanzar los Deployments y Services (Las Apps en deployment file .yml)
+          kubectl apply -f orquesta_PHP-apps-k3s/kubernetes/apps_php_despliegue.yml
+
+          # Abrir el tráfico (Ingress de Traefik)
+          kubectl apply -f orquesta_PHP-apps-k3s/kubernetes/ingress.yml
+
+          # Verificar que el despliegue fue exitoso
+          echo "Verificando estado de los Pods..."
+          kubectl rollout status deployment/sitiopruebas-deployment -n apps-php
+          kubectl rollout status deployment/registrousuarios-deployment -n apps-php
+          
+          echo "--- Despliegue Completado ---"
+          
+      - name: Debug si falla el despliegue
+        if: failure() # Solo se ejecuta si los pasos anteriores fallan
+        run: |
+          echo "--- ESTADO DE LOS PODS ---"
+          kubectl get pods -n apps-php
+          
+          echo "--- DESCRIPCIÓN DEL POD FALLIDO ---"
+          # Describe el pod para ver por qué está en Pending o Crash
+          kubectl describe pods -n apps-php -l app=sitiopruebas 
+          
+          echo "--- ÚLTIMOS LOGS DE PHP ---"
+          kubectl logs -l app=sitiopruebas -n apps-php --tail=50

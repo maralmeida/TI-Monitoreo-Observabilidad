@@ -1,0 +1,157 @@
+# puerto por defecto 30000-32767
+
+---
+# --- APP: SITIO PRUEBAS ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sitiopruebas-deployment
+  namespace: apps-php # <--- organiza todo los recursos en un namespace para no mezclar con otras apps o recursos de K3s si es necesario
+spec:
+  replicas: 1 # Si nota que hay 0 contenedores corriendo, lo levanta de nuevo automáticamente. Si quieres alta disponibilidad, pon 2 o más.
+  selector:
+    matchLabels:
+      app: sitiopruebas # debe concidir con el label del template. tag con el que el deployment encuentra a los pods que creó para gestionarlos
+  template:
+    metadata:
+      labels:
+        app: sitiopruebas # debe concidir con el label del selector. tag que le pone a los pods que creó para que el deployment los gestione
+    spec:
+      nodeSelector:
+        clgroup: apps  # <--- Solo se ejecutará en nodos con esta etiqueta
+      containers:
+      - name: accesositios
+        image: mariettar/accesositiosweb:latest
+        ports:
+        - containerPort: 80
+        
+        # --- MEJOR PRÁCTICA: LÍMITES DE RECURSOS ---
+        # Evita que un error de PHP consuma toda la memoria de tu Ubuntu
+        resources:
+          requests:
+            memory: "64Mi"  # Lo mínimo que necesita para arrancar
+            cpu: "100m"     # Un poquito de procesador
+          limits:
+            memory: "128Mi" # Lo máximo que le permitimos usar
+            cpu: "500m"     # No dejamos que use más de medio núcleo
+
+        # --- MEJOR PRÁCTICA: SALUD (Traefik/K8s) ---
+        livenessProbe: # Si la app se "congela", K8s la reinicia sola
+          httpGet:
+            path: / # O la ruta /healthcheck que tengas
+            port: 80
+          initialDelaySeconds: 15 # Espera 15 seg a que cargue PHP
+          periodSeconds: 20       # Revisa cada 20 segundos
+        readinessProbe: # Si falla, SACA de Traefik (no recibe tráfico)
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+
+        # --- VINCULAR VARIABLES ---
+        # En lugar de escribir valor por valor, traemos todo del ConfigMap y Secret
+        envFrom:
+        - configMapRef:
+            name: apps-config
+        - secretRef:
+            name: apps-secrets
+
+---
+# EL SERVICE: Es la IP interna fija para que Traefik encuentre la App
+apiVersion: v1
+kind: Service
+metadata:
+  name: sitiopruebas-service
+  namespace: apps-php
+spec:
+  selector:
+    app: sitiopruebas
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
+
+
+---
+# --- APP: REGISTRO USUARIOS ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registrousuarios-deployment
+  namespace: apps-php
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registrousuarios
+  template:
+    metadata:
+      labels:
+        app: registrousuarios
+    spec:
+      nodeSelector:
+        clgroup: apps  # <--- Solo se ejecutará en nodos con esta etiqueta
+      containers:
+      - name: registrousuarios
+        image: mariettar/registrousuarios:latest
+        ports:
+        - containerPort: 80
+        
+        # --- MEJOR PRÁCTICA: LÍMITES DE RECURSOS ---
+        # Evita que un error de PHP consuma toda la memoria de tu Ubuntu
+        resources:
+          requests:
+            memory: "64Mi"  # Lo mínimo que necesita para arrancar
+            cpu: "100m"     # Un poquito de procesador
+          limits:
+            memory: "128Mi" # Lo máximo que le permitimos usar
+            cpu: "500m"     # No dejamos que use más de medio núcleo
+
+        # --- MEJOR PRÁCTICA: SALUD (Traefik/K8s) ---
+        livenessProbe: # Si la app se "congela", K8s la reinicia sola
+          httpGet:
+            path: / # O la ruta /healthcheck que tengas
+            port: 80
+          initialDelaySeconds: 15 # Espera 15 seg a que cargue PHP
+          periodSeconds: 20       # Revisa cada 20 segundos
+        readinessProbe: # Si falla, SACA de Traefik (no recibe tráfico)
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+
+        # --- VINCULAR VARIABLES ---
+        # En lugar de escribir valor por valor, traemos todo del ConfigMap y Secret
+        envFrom:
+        - configMapRef:
+            name: apps-config
+        - secretRef:
+            name: apps-secrets
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: registrousuarios-service
+  namespace: apps-php
+spec:
+  selector:
+    app: registrousuarios
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  namespace: apps-php
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web # Le avisamos a Traefik que escuche por el puerto 80 (web)
+spec:
+  rules:
+  #  APP 1
+  - host: sitios.colores.local # lo que se escribe en el navegador para acceder a la app
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: sitiopruebas-service # Nombre del primer Service
+            port:
+              number: 80
+
+  # APP 2 
+  - host: registro.colores.local 
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: registrousuarios-service # Nombre del segundo Service
+            port:
+              number: 80
